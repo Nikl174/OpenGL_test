@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/nikl/gitrepos/OpenGL_test/helloGL/cmake-build-Release",
+  "command": "/usr/bin/c++   -O3 -DNDEBUG -o CMakeFiles/MAIN.dir/src/main.cpp.o -c /home/nikl/gitrepos/OpenGL_test/helloGL/src/main.cpp",
+  "file": "/home/nikl/gitrepos/OpenGL_test/helloGL/src/main.cpp"
+}
+]
