@@ -1,2 +1,2 @@
-.cache/
-cmake-build-Release/
+.cache
+cmake-build-Release
