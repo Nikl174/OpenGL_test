@@ -1,3 +1,0 @@
-/home/nikl/gitrepos/OpenGL_test/helloGL/cmake-build-Release/CMakeFiles/MAIN.dir
-/home/nikl/gitrepos/OpenGL_test/helloGL/cmake-build-Release/CMakeFiles/edit_cache.dir
-/home/nikl/gitrepos/OpenGL_test/helloGL/cmake-build-Release/CMakeFiles/rebuild_cache.dir
