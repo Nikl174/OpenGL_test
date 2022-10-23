@@ -14,6 +14,7 @@ void processInput(GLFWwindow *window) {
 }
 
 int main(int argc, char *argv[]) {
+    // Init glfw
   glfwInit();
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -26,20 +27,54 @@ int main(int argc, char *argv[]) {
     glfwTerminate();
     return -1;
   }
+  //Set as window
   glfwMakeContextCurrent(window);
 
+  //Init GLAD
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 
     std::cout << "Failed to initialise GLAD!" << std::endl;
     return -1;
   }
 
+  //Make visible
   glViewport(0, 0, 800, 600);
-
   glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-  float red = 1.0f, green = 0.0f, blue = 0.0f, d_red = -0.01f, d_green = 0.01f,
-        d_blue = 0.0f;
+  // vertices and shader
+  float vertices[] = {
+      -0.5f, -0.5f, 0.0f,
+      0.5f, -0.5f, 0.0f,
+      0.0f, 0.5f, 0.0f
+  };
+  const char *vertexShaderSource =
+      "#version 330 core\n"	//OpenGL version
+      "layout (location = 0) in vec3 aPos;\n" //var declaration as in(put) -> vector(3,1)
+      "void main()\n"
+      "{\n"
+      " gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n" //convert to vector(4,1)
+      "}\0";
+  unsigned int VBO;
+
+  //Write Vertices to Buffer (VRAM)
+  glGenBuffers(1,&VBO);
+  glBindBuffer(GL_ARRAY_BUFFER,VBO);
+  glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices, GL_STATIC_DRAW);
+
+  unsigned int vertexShader;
+  vertexShader = glCreateShader(GL_VERTEX_SHADER);
+
+  glShaderSource(vertexShader,1,&vertexShaderSource,NULL);
+  glCompileShader(vertexShader);
+
+  int success;
+  char infoLog[512];
+  glGetShaderiv(vertexShader,GL_COMPILE_STATUS,&success);
+
+  if (!success) {
+      glGetShaderInfoLog(vertexShader,512,NULL,infoLog);
+      std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n"<<infoLog << std::endl;
+  }
 
   while (!glfwWindowShouldClose(window)) {
 
@@ -47,18 +82,6 @@ int main(int argc, char *argv[]) {
     processInput(window);
 
     // Rendering:
-    glClearColor(red, green, blue, 1.0f);
-    red += d_red;
-    green += d_green;
-    blue += d_blue;
-
-    if (green >= 1.0f) {
-      d_red = 0.0f, d_green = -0.01f, d_blue = 0.01f;
-    } else if (red >= 1.0f) {
-      d_red = -0.01f, d_green = 0.01f, d_blue = 0.0f;
-    } else if (blue >= 1.0f) {
-      d_red = 0.01f, d_green = 0.0f, d_blue = -0.01f;
-    }
 
     //std::cout << "Red;Green;Blue : "<<red<<";"<<green<<";"<<blue  << std::endl;
 
